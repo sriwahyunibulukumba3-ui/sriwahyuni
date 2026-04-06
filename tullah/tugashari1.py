@@ -1,0 +1,5 @@
+print("Target 4 Bulan PKL")
+print("1. Menguasai dasar-dasar python")
+print("2. Paham cara menggunakan Database")
+print("3. Berhasil memebuat Web Dashboard")
+print("Semangat")
