@@ -1,0 +1,11 @@
+"====================================\n"
+print("|    STATUS SERVER BIMA-01   |\n")
+"====================================\n"
+"sistem operasi :   ubuntu 22.04 LTS\n"
+"uptime         :   24 hari, 5jam\n"
+"kapasitas RAM  :   16 GB / 32 GB\n"
+"suhu prosesor  :   45C aman\n"
+"status jaringan:   terhubung (online)\n"
+"-------------------------------------\n"
+"terakhir update:   08:00 WIB\n"
+"=====================================/n"
