@@ -1,9 +1,14 @@
-print("===  MESIN HITUNG DISKON   ===")
-print("masukkan data berikut:")
+print("===  MESIN HITUNG DISKON ===")
 
-print("harga awal    :   Rp","100000")
-print("diskon        :   20%")
-print("potongan      :   20000")
-print("total bayar   :   Rp", int(80000))
-print("----------------------------------")
-print("Terima kasih telah berbelanja!")
+# Meminta input
+harga_asli = int(input("masukan presentasi diskon (contoh 20 untuk untuk 20%):"))
+
+# proses matematika
+potongan = harga_asli * ( 20 / 100)
+harga_akhir = harga_asli - potongan
+
+# output
+print("\n--- STRUK PEMBAYARAN ---")
+print(f"Harga Awal      : Rp {100000}")
+print(f"Diskon {20} %   : Rp {int(20)}")
+print(f"total bayar     : Rp {int(80000)}")
