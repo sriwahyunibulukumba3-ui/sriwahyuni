@@ -1,19 +1,18 @@
-# List
-# menggunakan kurung siku
-data_list = [10,2,4,3,2]
-print(data_list)
+# list -> array, mengakses dengan
+# mennggunakn index
 
-# tuples
-data_tuples = (7,8,9,10)
-print(data_tuples)
-print(data_tuples[1])
+data_list = ['ucup','otong','dudung']
 
-# tidak bisa dilakukan
-# data_tuples[1] = "ucup"
-# data_tuples,append(1)
+print(data_list[0])
 
-# sets
-data_sets = {10,4,3,2,4,7,6,5}
-print(data_sets)
+# dictionary (dict) -> associative array
+# identifirer -> key
 
-print(data_sets)
+data_dict = {
+    'key':'value',
+    'cp':'ucup',
+    'tg':'otong',
+    'dg':'dudung',
+    'nmbr':100,
+    'list':'data_list'
+}
