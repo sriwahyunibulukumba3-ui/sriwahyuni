@@ -10,10 +10,10 @@ teman_teman = {
 
 # looping first try (yang keluar adalah keynya)
 
-for teman in teman_teman:
-    print(teman)
+for tema in teman_teman:
+    print(teman_teman)
 
-# operator mengambil item / iterbles
+# operator untuk mengambil item / iterables
 keys = teman_teman.keys()
 print(keys)
 
@@ -24,7 +24,7 @@ values = teman_teman.values()
 print(values)
 
 for value in teman_teman.values():
-    print(teman_teman.get(key))
+    print(value)
 
 items = teman_teman.items()
 print(items)
