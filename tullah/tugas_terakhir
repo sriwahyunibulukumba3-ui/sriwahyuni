@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bulukumba Digital Infrastructure Monitor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "primary-fixed": "#d7e2ff",
+                        "on-background": "#191c1d",
+                        "surface-container": "#edeeef",
+                        "tertiary-fixed": "#ffdf9e",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-container": "#007327",
+                        "on-secondary-fixed": "#002106",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-fixed": "#83fc8e",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#eeb400",
+                        "on-surface-variant": "#424751",
+                        "primary-fixed-dim": "#abc7ff",
+                        "on-primary-container": "#9bbdff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary-container": "#624800",
+                        "outline-variant": "#c2c6d3",
+                        "surface-variant": "#e1e3e4",
+                        "primary": "#00346f",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#463200",
+                        "on-primary-fixed-variant": "#00458f",
+                        "secondary-fixed-dim": "#66df75",
+                        "secondary-container": "#80f98b",
+                        "on-tertiary-fixed-variant": "#5b4300",
+                        "secondary": "#006e25",
+                        "tertiary-fixed-dim": "#fabd00",
+                        "inverse-primary": "#abc7ff",
+                        "surface-container-low": "#f3f4f5",
+                        "outline": "#737783",
+                        "surface-tint": "#255dad",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#00531a",
+                        "on-primary-fixed": "#001b3f",
+                        "background": "#f8f9fa",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004a99",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-page": "2rem",
+                        "gutter": "1.5rem",
+                        "stack-sm": "0.5rem",
+                        "sidebar-width": "260px",
+                        "container-max": "1440px",
+                        "stack-md": "1rem",
+                        "stack-lg": "2rem"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F1F3F5;
+        }
+        .status-pill {
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-online { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .status-warning { background-color: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+        .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface-bright text-on-surface">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width z-40 flex flex-col pt-4 bg-surface-container-lowest border-r border-outline-variant">
+<div class="px-6 mb-8 flex items-center gap-3">
+<img alt="Kabupaten Bulukumba Logo" class="h-10 w-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ7lRaDft2Bg3eyal8Cqf4R7Zefxp4yWQ3IaHzqSq40yhIXM7cDr9M9wZcb1LFqUotZ7TXmLFiwmQPSNs16Y5Su-Zn5qyC_y7JwL1FcPirRMnGwvF4PnMWA38gDnRl7nHdbuK6wPM79s7I0FgzyXEV1wjd9tITdfsC02vOB-d4uV60TD4JniBeaxmErrOM1DMTvnD2FPoA9uJHsr8YzlToT8Wd5FKaO719VVqzWU54IeGck6AgxfQZzHoBwTescz4nhiaevYo5VZM"/>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-tight">Bulukumba Digital</h2>
+<p class="text-[10px] uppercase tracking-widest text-outline">Infrastructure Monitor</p>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 bg-primary-fixed text-on-primary-fixed-variant border-l-4 border-primary px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">lan</span>
+<span class="font-label-md text-label-md">Services</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant p-4 space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Wrapper -->
+<div class="ml-[260px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center px-margin-page h-16 w-full bg-surface-bright border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Bulukumba Digital Infrastructure Monitor</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group hidden lg:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container border border-outline-variant rounded-lg text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 w-64 transition-all" placeholder="Search systems..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a government digital infrastructure operator, clean lighting, corporate office background, 8k resolution, high contrast, blue and white professional tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWOtjCpfo5UGAvF6x_ww5YHbaV1RnCQ3OprIQf4xMAnMPv2zJ7PNjgevoIAL-UPJK787_QBEm5AbwsgOcr5hyTsj0j2tQ2BkakZMyl5FJXmtZAsbu4LefD7UwsCAM4eDJkh0erYbyVDMf4t8gaWkjnA7NoCaz2ksBgNEkxPG4Ndz__sF5cjU3OxUszHR-Y7q5P-QCrsl8N4gqD9SnlV7_CX_rhAGZ60C780G-YZCw5RXErufBugkXEADc5CaM4O-HcZ0HBeGW4hmY"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="p-8 space-y-gutter max-w-container-max mx-auto w-full">
+<!-- Summary Row: 3 Large Status Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col justify-between transition-all hover:shadow-md group">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1">bpkpsdm</h3>
+<p class="text-label-md text-outline truncate w-40">bulukumbakab.go.id</p>
+</div>
+<span class="status-pill status-online">Online</span>
+</div>
+<div class="mt-8 flex items-baseline gap-2">
+<span class="font-mono-data text-4xl text-on-surface">99.9</span>
+<span class="text-body-md text-outline">% Uptime</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-1 text-on-secondary-container">
+<span class="material-symbols-outlined text-sm">bolt</span>
+<span class="font-mono-data text-body-md">120ms</span>
+</div>
+<div class="h-8 w-24">
+<!-- Mini Sparkline SVG -->
+<svg class="w-full h-full stroke-secondary fill-none" viewbox="0 0 100 30">
+<path d="M0 25 L10 22 L20 26 L30 15 L40 18 L50 10 L60 12 L70 5 L80 15 L90 10 L100 12" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col justify-between transition-all hover:shadow-md relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1">dkpd</h3>
+<p class="text-label-md text-outline truncate w-40">bulukumbakab.go.id</p>
+</div>
+<span class="status-pill status-warning">Latency</span>
+</div>
+<div class="mt-8 flex items-baseline gap-2">
+<span class="font-mono-data text-4xl text-on-surface">98.5</span>
+<span class="text-body-md text-outline">% Uptime</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-mono-data text-body-md">450ms</span>
+</div>
+<div class="h-8 w-24">
+<svg class="w-full h-full stroke-tertiary fill-none" viewbox="0 0 100 30">
+<path d="M0 15 L10 25 L20 10 L30 30 L40 5 L50 20 L60 25 L70 10 L80 15 L90 28 L100 25" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col justify-between transition-all hover:shadow-md">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1">pustaka</h3>
+<p class="text-label-md text-outline truncate w-40">bulukumbakab.go.id</p>
+</div>
+<span class="status-pill status-online">Online</span>
+</div>
+<div class="mt-8 flex items-baseline gap-2">
+<span class="font-mono-data text-4xl text-on-surface">100</span>
+<span class="text-body-md text-outline">% Uptime</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-1 text-on-secondary-container">
+<span class="material-symbols-outlined text-sm">bolt</span>
+<span class="font-mono-data text-body-md">85ms</span>
+</div>
+<div class="h-8 w-24">
+<svg class="w-full h-full stroke-secondary fill-none" viewbox="0 0 100 30">
+<path d="M0 15 L10 14 L20 15 L30 14 L40 15 L50 14 L60 15 L70 14 L80 15 L90 14 L100 15" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Analytics Section -->
+<section class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Average Response Time</h2>
+<p class="text-body-md text-outline">Real-time infrastructure performance over last 24 hours</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 border border-outline-variant rounded text-label-md hover:bg-surface-container transition-colors">Export Report</button>
+<button class="px-4 py-1.5 bg-primary text-white rounded text-label-md hover:opacity-90 transition-opacity">Live Updates</button>
+</div>
+</div>
+<div class="h-64 w-full relative">
+<!-- Simulated Chart Grid -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="border-b border-outline-variant/30 w-full h-0"></div>
+<div class="border-b border-outline-variant/30 w-full h-0"></div>
+<div class="border-b border-outline-variant/30 w-full h-0"></div>
+<div class="border-b border-outline-variant/30 w-full h-0"></div>
+</div>
+<!-- Main Line Graph -->
+<svg class="w-full h-full overflow-visible" viewbox="0 0 800 200">
+<defs>
+<lineargradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="rgba(0, 52, 111, 0.2)"></stop>
+<stop offset="100%" stop-color="rgba(0, 52, 111, 0)"></stop>
+</lineargradient>
+</defs>
+<path d="M0,150 Q50,120 100,140 T200,100 T300,160 T400,90 T500,110 T600,40 T700,70 T800,60" fill="none" stroke="#00346f" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0,150 Q50,120 100,140 T200,100 T300,160 T400,90 T500,110 T600,40 T700,70 T800,60 V200 H0 Z" fill="url(#lineGrad)"></path>
+<!-- Data Points -->
+<circle cx="600" cy="40" fill="#00346f" r="4"></circle>
+<circle cx="800" cy="60" fill="#00346f" r="4"></circle>
+</svg>
+<div class="flex justify-between mt-4 font-mono-data text-[10px] text-outline px-2">
+<span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>NOW</span>
+</div>
+</div>
+</section>
+<!-- Recent Incident Log -->
+<aside class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">history</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Recent Incidents</h2>
+</div>
+<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
+<div class="p-3 bg-surface-container-low rounded border-l-4 border-tertiary">
+<p class="text-body-md text-on-surface font-medium">dkpd latency increase</p>
+<p class="text-[11px] text-outline mt-1 italic">5 mins ago • Current: 450ms</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded border-l-4 border-secondary">
+<p class="text-body-md text-on-surface font-medium">bpkpsdm recovery</p>
+<p class="text-[11px] text-outline mt-1 italic">1 hour ago • Stability: 100%</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded border-l-4 border-secondary">
+<p class="text-body-md text-on-surface font-medium">Daily backup completed</p>
+<p class="text-[11px] text-outline mt-1 italic">3 hours ago • pustaka</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded border-l-4 border-error">
+<p class="text-body-md text-on-surface font-medium">Database connectivity drop</p>
+<p class="text-[11px] text-outline mt-1 italic">6 hours ago • Resolved in 2m</p>
+</div>
+</div>
+<button class="mt-6 w-full py-2 border border-outline-variant text-label-md text-primary font-bold hover:bg-primary/5 transition-colors rounded">
+                        View Audit Logs
+                    </button>
+</aside>
+</div>
+<!-- Service List Table -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Full Service Status List</h2>
+<span class="text-body-md text-outline">Showing 3 of 3 Active Nodes</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest/30">
+<th class="px-6 py-4 text-label-md text-outline uppercase tracking-wider">Service Name</th>
+<th class="px-6 py-4 text-label-md text-outline uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 text-label-md text-outline uppercase tracking-wider text-center">SSL Status</th>
+<th class="px-6 py-4 text-label-md text-outline uppercase tracking-wider">Performance</th>
+<th class="px-6 py-4 text-label-md text-outline uppercase tracking-wider">Last Checked</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<a class="text-primary font-semibold hover:underline flex items-center gap-1" href="#">
+                                        bpkpsdm.bulukumbakab.go.id
+                                        <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+</a>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill status-online">Operational</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">
+                                    99.9% / 120ms
+                                </td>
+<td class="px-6 py-4 text-body-md text-outline">
+                                    Just now
+                                </td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<a class="text-primary font-semibold hover:underline flex items-center gap-1" href="#">
+                                        dkpd.bulukumbakab.go.id
+                                        <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+</a>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill status-warning">Degraded</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</td>
+<td class="px-6 py-4 font-mono-data text-tertiary">
+                                    98.5% / 450ms
+                                </td>
+<td class="px-6 py-4 text-body-md text-outline">
+                                    2 mins ago
+                                </td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<a class="text-primary font-semibold hover:underline flex items-center gap-1" href="#">
+                                        pustaka.bulukumbakab.go.id
+                                        <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+</a>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill status-online">Operational</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">
+                                    100% / 85ms
+                                </td>
+<td class="px-6 py-4 text-body-md text-outline">
+                                    Just now
+                                </td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pulsing animation for the notification dot
+            const dot = document.querySelector('.bg-error');
+            if (dot) {
+                setInterval(() => {
+                    dot.style.transform = 'scale(1.2)';
+                    setTimeout(() => { dot.style.transform = 'scale(1)'; }, 300);
+                }, 2000);
+            }
+
+            // Simple hover effect for cards
+            const cards = document.querySelectorAll('.bg-surface-container-lowest');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.borderColor = 'rgba(0, 52, 111, 0.3)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.borderColor = '#E9ECEF';
+                });
+            });
+        });
+    </script>
+</body></html>
