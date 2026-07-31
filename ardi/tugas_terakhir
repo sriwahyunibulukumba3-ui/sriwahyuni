@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GovMonitor AI - Bulukumba Subdomain Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#0d1c2f",
+                    "border-subtle": "#e2e8f0",
+                    "status-up": "#10b981",
+                    "surface-variant": "#d5e3fd",
+                    "tertiary": "#71001d",
+                    "secondary": "#5b5f62",
+                    "inverse-primary": "#abc7ff",
+                    "on-surface-variant": "#424751",
+                    "on-primary-fixed-variant": "#00458f",
+                    "on-error-container": "#93000a",
+                    "header-dark": "#0f172a",
+                    "on-tertiary-fixed": "#40000c",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#d5e3fd",
+                    "surface-container": "#e6eeff",
+                    "outline": "#737783",
+                    "on-tertiary-fixed-variant": "#920028",
+                    "surface-container-high": "#dde9ff",
+                    "secondary-container": "#dde0e3",
+                    "on-primary-container": "#9bbdff",
+                    "surface-tint": "#255dad",
+                    "surface-bright": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#001b3f",
+                    "surface-dim": "#ccdbf4",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-container": "#ffa4a9",
+                    "inverse-surface": "#233144",
+                    "tertiary-container": "#9c002b",
+                    "on-surface": "#0d1c2f",
+                    "secondary-fixed": "#e0e3e6",
+                    "inverse-on-surface": "#ebf1ff",
+                    "primary-fixed-dim": "#abc7ff",
+                    "tertiary-fixed": "#ffdada",
+                    "on-secondary-fixed-variant": "#43474a",
+                    "primary": "#00346f",
+                    "outline-variant": "#c2c6d3",
+                    "primary-fixed": "#d7e2ff",
+                    "status-warning": "#f59e0b",
+                    "background": "#f8f9ff",
+                    "secondary-fixed-dim": "#c3c7ca",
+                    "status-down": "#ef4444",
+                    "surface": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb3b6",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#181c1e",
+                    "primary-container": "#004a99",
+                    "on-secondary-container": "#5f6366"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "container-max": "1440px",
+                    "card-padding": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Public Sans"],
+                    "headline-md": ["Public Sans"],
+                    "label-mono": ["JetBrains Mono"],
+                    "status-label": ["Public Sans"],
+                    "title-lg": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "display-lg": ["Public Sans"],
+                    "headline-lg": ["Public Sans"],
+                    "body-md": ["Public Sans"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "status-label": ["12px", {"lineHeight": "12px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-striping tr:nth-child(even) {
+            background-color: #f8f9ff;
+        }
+        .metric-card {
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        .metric-card:hover {
+            box-shadow: 0px 4px 12px rgba(13, 28, 47, 0.05);
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-on-background dark:bg-header-dark flex flex-col py-8 gap-2 z-50">
+<div class="px-6 mb-8">
+<h2 class="font-title-lg text-title-lg text-inverse-on-surface">System Health</h2>
+<p class="text-surface-variant text-xs opacity-70">Monitoring Active</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-surface-variant dark:text-outline-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-on-surface-variant/20 hover:text-white transition-all cursor-pointer active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="bg-primary-container text-on-primary-container font-semibold rounded-xl mx-2 px-4 py-3 flex items-center gap-3 cursor-pointer active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+<span>Subdomains</span>
+</a>
+<a class="text-surface-variant dark:text-outline-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-on-surface-variant/20 hover:text-white transition-all cursor-pointer active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span>Alerts</span>
+</a>
+<a class="text-surface-variant dark:text-outline-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-on-surface-variant/20 hover:text-white transition-all cursor-pointer active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings_applications">settings_applications</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 bg-surface-variant/10 rounded-xl">
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Official government agency crest for Bulukumba Regency, featuring intricate traditional symbols in a clean gold and deep blue embroidery style, professional corporate photography lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpw690Gq0tZIbY1NikgnvZdniYHNwuQW-ubUBkMpiGYNGL1M1gSvhiYQJCoUYEnR-MQcOT9io-FZISwDsJBs0VPT6Rujbw0cOtvIWB9V_FWVHBWq24ztRkKsr7YE88P1GTbw3Y7Oxi4Lhp-XFH5SFhEPCjlB1gi9jbb1g4UeVqL0s2nFUIBaBO2KyczMu885tntcYlvx4d26XdACYtm3YdeHpKHdUoiL1bZBsPoNfKRyi5nyx6uMzuow"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold text-white truncate">Bulukumba Admin</p>
+<p class="text-xs text-surface-variant opacity-60 truncate">IT Division</p>
+</div>
+</div>
+</div>
+</aside>
+<div class="ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="w-full h-16 bg-surface-container-lowest dark:bg-header-dark border-b border-border-subtle dark:border-outline-variant flex justify-between items-center px-margin-desktop sticky top-0 z-40">
+<div class="flex items-center gap-6">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">GovMonitor AI</h1>
+<div class="hidden md:flex relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-body-md w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search subdomain..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-low dark:hover:bg-on-surface-variant/10 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low dark:hover:bg-on-surface-variant/10 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-px bg-border-subtle mx-2"></div>
+<div class="flex items-center gap-3">
+<span class="text-body-md font-semibold text-primary dark:text-inverse-primary hidden lg:block">System Administrator</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a government technology official, clean modern aesthetic, soft office background lighting, high-quality digital portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVyFSmEZ4u1gutePwBkquZft7FpBvUjXnmD5lG808tsKtH9yKZpKd2VOvGg5V-LgbseUfJHRISUyHNCAjMqnbOCD6mfjlNJ0Wv_dw9rW9YcFnoj5q-M0TEIThaupP7XZEJTEVCQ9mX4g39lIkg6qqesvb6uXu2phlAOm7KIBW-7AEguVwQfhI5xFLEVm-_FnQ1rwsC6O76FVLVOB_60GMHYLUwWuV9X3LySNPwR1jZN3wOKIpIS9IDTw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 p-margin-desktop max-w-container-max mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-gutter flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<nav aria-label="Breadcrumb" class="flex mb-2">
+<ol class="flex items-center space-x-2 text-xs font-label-mono uppercase tracking-wider text-outline">
+<li><a class="hover:text-primary" href="#">Dashboard</a></li>
+<li class="flex items-center">
+<span class="material-symbols-outlined text-[14px] mx-1" data-icon="chevron_right">chevron_right</span>
+<span>Monitoring</span>
+</li>
+</ol>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Pusat Monitoring Subdomain</h2>
+<p class="text-body-lg text-secondary mt-1">Real-time status overview for government digital infrastructure.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white border border-border-subtle rounded-xl text-body-md font-semibold flex items-center gap-2 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span> Export Report
+                    </button>
+<button class="px-4 py-2 bg-primary text-white rounded-xl text-body-md font-semibold flex items-center gap-2 hover:opacity-90 shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span> Add Monitor
+                    </button>
+</div>
+</div>
+<!-- Summary Cards Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-gutter">
+<div class="metric-card bg-white p-card-padding rounded-xl flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-label-mono text-outline uppercase">Total Subdomain</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="web">web</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-background">3</span>
+<span class="text-status-up text-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span> +0
+                        </span>
+</div>
+<div class="mt-auto pt-4 border-t border-border-subtle flex items-center gap-2 text-xs text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> Terakhir dicek: 1m yang lalu
+                    </div>
+</div>
+<div class="metric-card bg-white p-card-padding rounded-xl flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-label-mono text-outline uppercase">Aktif</span>
+<div class="w-8 h-8 rounded-lg bg-status-up/10 flex items-center justify-center text-status-up">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-background">3</span>
+<span class="text-status-up text-sm font-semibold">100% Total</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border-subtle flex items-center gap-2 text-xs text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="sync">sync</span> Pemantauan kontinu
+                    </div>
+</div>
+<div class="metric-card bg-white p-card-padding rounded-xl flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-label-mono text-outline uppercase">Down</span>
+<div class="w-8 h-8 rounded-lg bg-status-down/10 flex items-center justify-center text-status-down">
+<span class="material-symbols-outlined" data-icon="error">error</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-background">0</span>
+<span class="text-secondary text-sm font-semibold">Healthy</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border-subtle flex items-center gap-2 text-xs text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="history">history</span> No incidents 24h
+                    </div>
+</div>
+<div class="metric-card bg-white p-card-padding rounded-xl flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-label-mono text-outline uppercase">Rata-rata Uptime</span>
+<div class="w-8 h-8 rounded-lg bg-status-warning/10 flex items-center justify-center text-status-warning">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-background">99.9</span>
+<span class="text-on-background text-sm font-semibold">%</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border-subtle flex items-center gap-2 text-xs text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="insights">insights</span> Last 30 days
+                    </div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-gutter">
+<!-- Main Status Table -->
+<div class="xl:col-span-2 bg-white rounded-xl border border-border-subtle overflow-hidden">
+<div class="px-6 py-5 border-b border-border-subtle flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg text-on-background">Main Status</h3>
+<button class="text-primary text-sm font-semibold hover:underline">Refresh All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left zebra-striping">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-6 py-4 font-label-mono text-xs uppercase text-outline">Subdomain</th>
+<th class="px-6 py-4 font-label-mono text-xs uppercase text-outline">Status</th>
+<th class="px-6 py-4 font-label-mono text-xs uppercase text-outline">Uptime</th>
+<th class="px-6 py-4 font-label-mono text-xs uppercase text-outline">Terakhir Dicek</th>
+<th class="px-6 py-4 font-label-mono text-xs uppercase text-outline text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold text-on-background">BKPSDM</span>
+<span class="text-xs text-secondary">bkpsdm.bulukumbakab.go.id</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-status-label bg-status-up/10 text-status-up border border-status-up/20">
+<span class="pulse-dot bg-status-up"></span> Aktif
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="font-semibold text-on-background">100%</span>
+<div class="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-status-up h-full" style="width: 100%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md text-secondary">1 menit yang lalu</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold text-on-background">DKPD</span>
+<span class="text-xs text-secondary">dkpd.bulukumba.go.id</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-status-label bg-status-up/10 text-status-up border border-status-up/20">
+<span class="pulse-dot bg-status-up"></span> Aktif
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="font-semibold text-on-background">99.8%</span>
+<div class="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-status-up h-full" style="width: 99.8%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md text-secondary">2 menit yang lalu</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold text-on-background">Pustaka</span>
+<span class="text-xs text-secondary">pustaka.bulukumbakab.go.id</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-status-label bg-status-up/10 text-status-up border border-status-up/20">
+<span class="pulse-dot bg-status-up"></span> Aktif
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="font-semibold text-on-background">99.9%</span>
+<div class="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-status-up h-full" style="width: 99.9%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md text-secondary">5 menit yang lalu</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-border-subtle bg-surface-container-lowest">
+<p class="text-xs text-outline text-center">Menampilkan 3 dari 3 subdomain aktif</p>
+</div>
+</div>
+<!-- Statistik Respon Section -->
+<div class="bg-white rounded-xl border border-border-subtle flex flex-col">
+<div class="px-6 py-5 border-b border-border-subtle">
+<h3 class="font-title-lg text-title-lg text-on-background">Statistik Respon</h3>
+<p class="text-xs text-secondary mt-1">Kecepatan respon rata-rata (ms)</p>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-center items-center">
+<!-- Placeholder for Line Chart with subtle animation -->
+<div class="w-full h-48 relative overflow-hidden bg-surface-container-lowest border border-border-subtle rounded-lg flex flex-col items-center justify-center group">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(#00346f_1px,transparent_1px)] [background-size:20px_20px]"></div>
+<!-- Simulated Chart Pattern -->
+<div class="absolute bottom-10 left-0 w-full h-full flex items-end px-4 gap-4">
+<div class="w-full h-1/2 border-b-2 border-primary/30 relative">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 400 100">
+<path class="drop-shadow-md" d="M0,80 Q50,40 100,70 T200,30 T300,60 T400,20" fill="none" stroke="#00346f" stroke-linecap="round" stroke-width="2.5">
+<animate attributename="stroke-dasharray" dur="2s" from="0,1000" to="1000,0"></animate>
+</path>
+<circle class="animate-pulse" cx="100" cy="70" fill="#00346f" r="4"></circle>
+<circle class="animate-pulse" cx="200" cy="30" fill="#00346f" r="4"></circle>
+</svg>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-4xl mb-2 opacity-50 group-hover:scale-110 transition-transform duration-500" data-icon="query_stats">query_stats</span>
+<p class="text-xs text-secondary font-label-mono uppercase tracking-widest z-10">Data Visualizer Loading...</p>
+</div>
+<div class="mt-6 w-full space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-secondary flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span> Tercepat
+                                </span>
+<span class="font-semibold text-on-background">42 ms</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-secondary flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-status-warning"></span> Rata-rata
+                                </span>
+<span class="font-semibold text-on-background">128 ms</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-secondary flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-status-down"></span> Terlambat
+                                </span>
+<span class="font-semibold text-on-background">412 ms</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-margin-desktop py-base border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-outline font-label-mono uppercase">
+<div>© 2024 Dinas Komunikasi &amp; Informatika Kab. Bulukumba</div>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Documentation</a>
+</div>
+</footer>
+</main>
+</div>
+<script>
+        // Micro-interaction for refreshing table data
+        document.querySelector('.text-primary.text-sm.font-semibold').addEventListener('click', function(e) {
+            e.preventDefault();
+            const btn = this;
+            btn.textContent = 'Refreshing...';
+            btn.classList.add('opacity-50');
+            
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, index) => {
+                row.style.opacity = '0.3';
+                setTimeout(() => {
+                    row.style.opacity = '1';
+                    row.style.transition = 'opacity 0.5s ease';
+                }, 300 + (index * 150));
+            });
+
+            setTimeout(() => {
+                btn.textContent = 'Refresh All';
+                btn.classList.remove('opacity-50');
+            }, 1200);
+        });
+    </script>
+</body></html>
